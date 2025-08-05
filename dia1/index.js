@@ -11,7 +11,7 @@ async function moduloTrainers(db) {
 
   console.clear();
   const id = readline.question('Ingresa tu número de identificación: ');
-  const trainer = await trainers.findOne({ id });
+  const trainer = await trainers.findOne({ id });// id: 123, 456 
 
   if (!trainer) {
     console.log('Trainer no encontrado');
@@ -22,25 +22,29 @@ async function moduloTrainers(db) {
 
   let running = true;
   while (running) {
-    console.clear();
+    
     console.log('\nMenú Trainer:');
     console.log('1. Ver datos');
     console.log('2. Modificar nombre');
-    console.log('3. Salir');
+    console.log('3. bovrrar trainer');
+    console.log('4. Salir');
     const opcion = readline.question('Selecciona una opción: ');
-
     switch (opcion) {
       case '1':
         console.log(`Nombre: ${trainer.nombre}\nApellido: ${trainer.apellido}\nGrupo: ${trainer.grupo}`);
         break;
-      case '2':
-        console.clear();
+      case '2':        
         const nuevoNombre = readline.question('Nuevo nombre: ');
         await trainers.updateOne({ _id: trainer._id }, { $set: { nombre: nuevoNombre } });
         trainer.nombre = nuevoNombre;
         console.log('Nombre actualizado');
         break;
-      case '3':
+        case '3':
+          const borrar = readline.question('id de trainer a borrar: ');      
+          await trainers.deleteOne({ _id: trainer._id });
+        console.log('trainer borrado');
+        break;
+      case '4':
         running = false;
         break;
       default:
